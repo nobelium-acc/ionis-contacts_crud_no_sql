@@ -34,10 +34,32 @@ def ajouter_contact_cli():
 def modifier_contact_cli():
     """Interface CLI pour modifier un contact"""
     # 1. Demander ID ou rechercher par nom
+    contact_id = input("\nEntrez l'ID du contact à modifier : ")
     # 2. Afficher contact actuel
+    if not contact:
+        print("\n❌ Contact introuvable.")
+    return
+
+    print("\n📇 Contact actuel :")
+    print(contact)
     # 3. Demander nouvelles valeurs
+    print("\nEntrez les nouvelles valeurs (laisser vide pour ne pas modifier)")
+        nouveau_nom = input(f"Nom ({contact.nom}) : ") or contact.nom
+        nouveau_prenom = input(f"Prénom ({contact.prenom}) : ") or contact.prenom
+        nouveau_tel = input(f"Téléphone ({contact.telephone}) : ") or contact.telephone
+        nouvel_email = input(f"Email ({contact.email}) : ") or contact.email
+        nouvelle_adresse = input(f"Adresse ({contact.adresse}) : ") or contact.adresse
     # 4. Appeler Contact.modifier()
+    Contact.modifier(
+        contact_id,
+        nom=nouveau_nom,
+        prenom=nouveau_prenom,
+        telephone=nouveau_tel,
+        email=nouvel_email,
+        adresse=nouvelle_adresse
+        )
     # 5. Afficher confirmation
+    print("\n✅ Contact modifié avec succès !")
     pass
 
 
