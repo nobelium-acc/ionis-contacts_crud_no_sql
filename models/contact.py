@@ -46,6 +46,14 @@ class Contact:
     @classmethod
     def modifier(cls, contact_id, **updates):
         """Modifier un contact existant"""
+        updates["date_modification"] = datetime.now()
+
+        result = cls.collection.update_one(
+            {"_id": ObjectId(contact_id)},
+            {"$set": updates}
+    )
+
+    return result.modified_count > 0
         pass
 
     @classmethod
@@ -76,6 +84,10 @@ class Contact:
     @classmethod
     def obtenir_par_id(cls, contact_id):
         """Récupérer un contact par son ID"""
+        data = cls.collection.find_one({"_id": ObjectId(contact_id)})
+        if data:
+            return cls.from_dict(data)
+        return None
         pass
 
     @classmethod
