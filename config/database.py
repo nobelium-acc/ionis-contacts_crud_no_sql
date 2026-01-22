@@ -79,11 +79,22 @@ class Database:
 
     def get_collection(self, collection_name):
         """Récupérer une collection"""
-        pass
+        if self.db is None:
+            raise RuntimeError(
+                "DB non connectée. "
+                "Appelez d'abord db.connect() avant d'accéder aux collections"
+            )
+
+        return self.db[collection_name]
 
     def close(self):
         """Fermer la connexion"""
-        pass
+        if self.db is None:
+            raise RuntimeError(
+                "DB non connectée. "
+                "Appelez d'abord db.connect() avant d'accéder aux collections"
+            )
+        self.client.close()
 
 
 # Instance globale

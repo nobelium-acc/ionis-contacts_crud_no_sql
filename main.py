@@ -1,3 +1,5 @@
+from tabulate import tabulate
+
 from config.database import db
 from models.contact import Contact
 # from utils.file_manager import FileManager
@@ -23,12 +25,50 @@ def afficher_menu():
 
 
 def ajouter_contact_cli():
-    """Interface CLI pour ajouter un contact"""
-    # 1. Demander nom, prenom, tel, email
-    # 2. Valider avec Validator
-    # 3. Appeler Contact.ajouter()
-    # 4. Afficher confirmation
-    pass
+    """
+    Interface CLI pour ajouter un contact
+    """
+    print("\n" + "=" * 50)
+    print("         AJOUTER UN NOUVEAU CONTACT")
+    print("=" * 50)
+
+    try:
+        # Demander les informations
+        nom = input("\n📝 Nom: ").strip()
+        prenom = input("📝 Prénom: ").strip()
+        telephone = input("📞 Téléphone: ").strip()
+        email = input("📧 Email: ").strip()
+
+        # Demander l'adresse (optionnel)
+        print("\n📍 Adresse (optionnel - appuyez sur Entrée pour passer):")
+        rue = input("   Rue: ").strip()
+        ville = input("   Ville: ").strip()
+        code_postal = input("   Code postal: ").strip()
+        pays = input("   Pays: ").strip()
+
+        # Créer le dictionnaire adresse seulement si au moins un champ est rempli
+        adresse = None
+        if rue or ville or code_postal or pays:
+            adresse = {
+                'rue': rue,
+                'ville': ville,
+                'code_postal': code_postal,
+                'pays': pays
+            }
+
+        # Ajouter le contact
+        contact = Contact.create(nom, prenom, telephone, email, adresse)
+
+        print(f"\n✅ Contact ajouté avec succès!")
+        print(f"   ID: {contact._id}")
+        print(f"   {contact}")
+
+    except ValueError as e:
+        print(f"\n❌ {e}")
+    except Exception as e:
+        print(f"\n❌ Erreur: {e}")
+
+    input("\nAppuyez sur Entrée pour continuer...")
 
 
 def modifier_contact_cli():
@@ -55,14 +95,54 @@ def rechercher_contact_cli():
     # 1. Demander critère de recherche (nom, email, etc.)
     # 2. Appeler Contact.rechercher_par_nom() ou autre
     # 3. Afficher résultats
-    pass
+    print("\nQue voulez vous rechercher ? ")
+    search_input = input("\nVotre recherche : ")
+
+    contacts_by_name = Contact.get_by_name(search_input)
+    contacts_by_email = Contact.get_by_email(search_input)
 
 
 def lister_contacts_cli():
     """Interface CLI pour lister les contacts"""
     # 1. Appeler Contact.lister_tous()
     # 2. Afficher sous forme de tableau
-    pass
+    print("\n" + "=" * 100)
+    print("LISTE DES CONTACTS")
+    print("=" * 100)
+
+    try:
+        # Récupérer tous les contacts
+        contacts = Contact.get_all()
+
+        if not contacts:
+            print("\nAucun contact dans le carnet.")
+            input("\nAppuyez sur Entrée pour continuer...")
+            return
+
+        # Préparer les données pour le tableau
+        headers = ["ID", "Nom", "Prénom", "Email", "Téléphone", "Ville"]
+        rows = []
+
+        for contact in contacts:
+            rows.append([
+                str(contact._id)[:8] + "...",  # ID raccourci
+                contact.nom,
+                contact.prenom,
+                contact.email,
+                contact.telephone,
+                contact.adresse.get('ville', 'N/A') if contact.adresse else 'N/A'
+            ])
+
+        # Afficher le tableau
+        print("\n")
+        print(tabulate(rows, headers=headers, tablefmt="grid"))
+        print(f"\nTotal: {len(contacts)} contact(s)")
+
+    except Exception as e:
+        print(f"\nErreur lors du listage: {e}")
+
+    input("\nAppuyez sur Entrée pour continuer...")
+
 
 
 def importer_contacts_cli():
