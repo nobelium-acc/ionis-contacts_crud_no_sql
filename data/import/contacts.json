@@ -1,0 +1,23 @@
+[
+    {
+        "nom": "ARY",
+        "prenom": "Tenor",
+        "telephone": "+33 9 11 21 55 28",
+        "email": "john1delogu@yahoo.fr",
+        "adresse": null
+    },
+    {
+        "nom": "Rogue",
+        "prenom": "PITOU",
+        "telephone": "0621457855",
+        "email": "jonathan2@yahoo.fr",
+        "adresse": null
+    },
+    {
+        "nom": "Max",
+        "prenom": "PREST",
+        "telephone": "0706214578",
+        "email": "s.progg@yahoo.fr",
+        "adresse": null
+    }
+]

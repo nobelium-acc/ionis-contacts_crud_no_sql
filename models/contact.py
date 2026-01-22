@@ -2,6 +2,7 @@ from config.database import db
 from bson.objectid import ObjectId
 from datetime import datetime
 
+from utils.file_manager import export_json, export_csv, import_json, import_csv
 from utils.validators import Validator
 
 
@@ -78,7 +79,7 @@ class Contact:
         # 2. Vérifier si l'email existe déjà
         contact_existant = cls.collection.find_one({'email': email})
         if contact_existant:
-            raise Exception(f"❌ Un contact avec l'email '{email}' existe déjà!")
+            raise Exception(f"Un contact avec l'email '{email}' existe déjà!")
 
         # 3. Créer le contact
         contact = cls(nom, prenom, telephone, email, adresse)
@@ -88,22 +89,44 @@ class Contact:
             result = cls.collection.insert_one(contact.to_dict())
             contact._id = result.inserted_id
 
-            print(f"✅ Contact ajouté: {contact}")
+            print(f"Contact ajouté: {contact}")
             return contact
 
         except Exception as e:
-            print(f"❌ Erreur lors de l'ajout du contact: {e}")
+            print(f"Erreur lors de l'ajout du contact: {e}")
             raise
 
     @classmethod
     def update(cls, contact_id, **updates):
         """Modifier un contact existant"""
-        pass
+        from bson import ObjectId
+
+        fields = {k: v for k, v in updates.items() if v is not None}
+
+        if not fields:
+            raise ValueError("Aucune donnée à modifier")
+
+        result = cls.collection.update_one(
+            {"_id": ObjectId(contact_id)},
+            {"$set": fields}
+        )
+
+        if result.matched_count == 0:
+            raise ValueError("Contact introuvable")
+
+        return True
 
     @classmethod
     def delete(cls, contact_id):
         """Supprimer un contact par ID"""
-        pass
+        if cls.collection is None:
+            cls.init_collection()
+
+        try:
+            return cls.collection.delete_one({"_id": ObjectId(contact_id)})
+        except Exception as e:
+            print(f"Erreur lors de la suppression: {e}")
+            return []
 
     @classmethod
     def get_by_name(cls, nom):
@@ -126,7 +149,7 @@ class Contact:
             contacts = [cls.from_dict(data) for data in results]
             return contacts
         except Exception as e:
-            print(f"❌Erreur lors de la recherche: {e}")
+            print(f"Erreur lors de la recherche: {e}")
             return []
 
     @classmethod
@@ -146,8 +169,36 @@ class Contact:
             return [cls.from_dict(data) for data in results]
 
         except Exception as e:
-            print(f"❌ Erreur lors de la recherche par email: {e}")
+            print(f"Erreur lors de la recherche par email: {e}")
             return []
+
+    @classmethod
+    def find(cls, value):
+        if cls.collection is None:
+            cls.init_collection()
+
+        try:
+            contact_by_id = cls.get_by_id(value)
+            if contact_by_id:
+                return [contact_by_id]
+            import re
+            regex = re.compile(re.escape(value), re.IGNORECASE)
+
+            results = cls.collection.find({
+                "$or": [
+                    {"nom": {"$regex": regex}},
+                    {"prenom": {"$regex": regex}},
+                    {"email": {"$regex": regex}},
+                    {"telephone": {"$regex": regex}},
+                ]
+            })
+
+            return [cls.from_dict(data) for data in results]
+
+        except Exception as e:
+            print(f"Erreur lors de la recherche par email: {e}")
+            return []
+
 
     @classmethod
     def get_by_telephone(cls, telephone):
@@ -169,10 +220,6 @@ class Contact:
             print(f"Erreur lors de la recherche par téléphone: {e}")
             return []
 
-    @classmethod
-    def search(cls, **criteres):
-        """Recherche générique avec critères multiples"""
-        pass
 
     @classmethod
     def get_all(cls, limit=None, skip=0, sort_by='nom'):
@@ -193,7 +240,7 @@ class Contact:
             return contacts
 
         except Exception as e:
-            print(f"❌ Erreur lors du listage: {e}")
+            print(f"Erreur lors du listage: {e}")
             return []
 
     @classmethod
@@ -223,7 +270,7 @@ class Contact:
             return None
 
         except Exception as e:
-            print(f"❌ Erreur lors de la récupération: {e}")
+            print(f"Erreur lors de la récupération: {e}")
             return None
 
     @classmethod
@@ -247,3 +294,40 @@ class Contact:
             adresse=data.get('adresse', {}),
             _id=data.get('_id')
         )
+
+    from utils.file_manager import export_json, export_csv
+
+    @classmethod
+    def export_contacts(cls, format="json"):
+        if cls.collection is None:
+            cls.init_collection()
+
+        contacts = []
+        for c in cls.collection.find():
+            c["_id"] = str(c["_id"])
+            contacts.append(c)
+
+        if format == "json":
+            return export_json(contacts, "contacts.json")
+
+        if format == "csv":
+            return export_csv(contacts, "contacts.csv")
+
+        raise ValueError("Unsupported export format")
+
+    @classmethod
+    def import_contacts(cls, format="json"):
+        if cls.collection is None:
+            cls.init_collection()
+
+        data = []
+        if format == "json":
+            data = import_json("contacts.json")
+
+        if format == "csv":
+            data = import_csv("contacts.csv")
+
+        return cls.collection.insert_many(data)
+
+
+
