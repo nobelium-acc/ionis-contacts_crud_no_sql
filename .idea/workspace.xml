@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="40466c52-504e-4c83-a233-04aae5323e1a" name="Changes" comment="Reviews - CRUD Create &amp; Listing">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/import/contacts.json" afterDir="false" />
+    <list default="true" id="40466c52-504e-4c83-a233-04aae5323e1a" name="Changes" comment="Reviews - CRUD Find, delete, import/export">
+      <change afterPath="$PROJECT_DIR$/Notes.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/import/contacts.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/import/contacts.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/contact.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/contact.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/file_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/file_manager.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +80,9 @@
       <workItem from="1768815328204" duration="1282000" />
       <workItem from="1768898241486" duration="7593000" />
       <workItem from="1769075777258" duration="22667000" />
-      <workItem from="1769102166731" duration="2149000" />
+      <workItem from="1769102166731" duration="2605000" />
+      <workItem from="1769163687507" duration="20000" />
+      <workItem from="1769177558055" duration="4917000" />
     </task>
     <task id="LOCAL-00001" summary="Carnet contact - Base">
       <option name="closed" value="true" />
@@ -107,7 +108,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769087470074</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Reviews - CRUD Find, delete, import/export">
+      <option name="closed" value="true" />
+      <created>1769104340295</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1769104340295</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -117,6 +126,7 @@
     <MESSAGE value="Carnet contact - Base" />
     <MESSAGE value="Dependencies" />
     <MESSAGE value="Reviews - CRUD Create &amp; Listing" />
-    <option name="LAST_COMMIT_MESSAGE" value="Reviews - CRUD Create &amp; Listing" />
+    <MESSAGE value="Reviews - CRUD Find, delete, import/export" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reviews - CRUD Find, delete, import/export" />
   </component>
 </project>

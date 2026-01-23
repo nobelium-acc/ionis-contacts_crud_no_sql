@@ -1,0 +1,13 @@
+Lancer le client :
+
+- Créer et activer un environnement virtuel python
+- Installer les dépendances (depuis le fichier requirements.txt)
+- Lancer le fichier main.py
+
+
+Pour les exports / imports de contacts :
+- L'export des contacts genere un fichier (data/export/contacts.csv ou contacts.json)
+Si le fichier existe déja , il est mis à jour avec les bonnes valeurs
+
+- L'import de contacts lit le contenu du fichier (data/import/contacs.json ou contacts.csv)
+

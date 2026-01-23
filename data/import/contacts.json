@@ -1,23 +1,37 @@
 [
     {
-        "nom": "ARY",
-        "prenom": "Tenor",
-        "telephone": "+33 9 11 21 55 28",
-        "email": "john1delogu@yahoo.fr",
-        "adresse": null
+        "nom": "Chevalier",
+        "prenom": "Adrien",
+        "telephone": "+33123456721",
+        "email": "adrien.chevalier21@email.com",
+        "adresse": {"rue": "4 rue Lafayette", "ville": "Paris", "code_postal": "75010", "pays": "France"}
     },
     {
-        "nom": "Rogue",
-        "prenom": "PITOU",
-        "telephone": "0621457855",
-        "email": "jonathan2@yahoo.fr",
-        "adresse": null
+        "nom": "Perrin",
+        "prenom": "Marine",
+        "telephone": "+33123456722",
+        "email": "marine.perrin22@email.com",
+        "adresse": {"rue": "18 avenue Victor Hugo", "ville": "Lyon", "code_postal": "69004", "pays": "France"}
     },
     {
-        "nom": "Max",
-        "prenom": "PREST",
-        "telephone": "0706214578",
-        "email": "s.progg@yahoo.fr",
-        "adresse": null
+        "nom": "Leroy",
+        "prenom": "Damien",
+        "telephone": "+33123456723",
+        "email": "damien.leroy23@email.com",
+        "adresse": {"rue": "7 boulevard Saint-Germain", "ville": "Paris", "code_postal": "75005", "pays": "France"}
+    },
+    {
+        "nom": "Giraud",
+        "prenom": "Elodie",
+        "telephone": "+33123456724",
+        "email": "elodie.giraud24@email.com",
+        "adresse": {"rue": "2 rue Jean Jaurès", "ville": "Marseille", "code_postal": "13002", "pays": "France"}
+    },
+    {
+        "nom": "Vidal",
+        "prenom": "Thomas",
+        "telephone": "+33123456725",
+        "email": "thomas.vidal25@email.com",
+        "adresse": {"rue": "10 avenue de la République", "ville": "Lille", "code_postal": "59002", "pays": "France"}
     }
 ]

@@ -1,11 +1,7 @@
 from tabulate import tabulate
 from config.database import db
 from models.contact import Contact
-# from utils.file_manager import FileManager
-# from utils.validators import Validator
 
-
-# ============= FONCTIONS MENU =============
 
 def afficher_menu():
     """Afficher le menu principal"""
@@ -18,34 +14,30 @@ def afficher_menu():
     print("4. Rechercher un contact")
     print("5. Lister tous les contacts")
     print("6. Importer des contacts (JSON/CSV)")
-    print("7. Exporter des contacts")
+    print("7. Exporter mes contacts (JSON/CSV)")
     print("8. Quitter")
     print("=" * 50)
 
 
 def ajouter_contact_cli():
-    """
-    Interface CLI pour ajouter un contact
-    """
+
     print("\n" + "=" * 50)
     print("AJOUTER UN NOUVEAU CONTACT")
     print("=" * 50)
 
     try:
-        # Demander les informations
-        nom = input("\n📝 Nom: ").strip()
-        prenom = input("📝 Prénom: ").strip()
-        telephone = input("📞 Téléphone: ").strip()
-        email = input("📧 Email: ").strip()
+        nom = input("\nNom: ").strip()
+        prenom = input("Prénom: ").strip()
+        telephone = input("Téléphone: ").strip()
+        email = input("Email: ").strip()
 
-        # Demander l'adresse (optionnel)
-        print("\n📍 Adresse (optionnel - appuyez sur Entrée pour passer):")
-        rue = input("   Rue: ").strip()
-        ville = input("   Ville: ").strip()
-        code_postal = input("   Code postal: ").strip()
-        pays = input("   Pays: ").strip()
 
-        # Créer le dictionnaire adresse seulement si au moins un champ est rempli
+        print("\nAdresse (optionnel - appuyez sur Entrée pour passer):")
+        rue = input("Rue: ").strip()
+        ville = input("Ville: ").strip()
+        code_postal = input("Code postal: ").strip()
+        pays = input("Pays: ").strip()
+
         adresse = None
         if rue or ville or code_postal or pays:
             adresse = {
@@ -63,9 +55,9 @@ def ajouter_contact_cli():
         print(f"{contact}")
 
     except ValueError as e:
-        print(f"\n❌ {e}")
+        print(f"\n{e}")
     except Exception as e:
-        print(f"\n❌ Erreur: {e}")
+        print(f"\nErreur: {e}")
 
     input("\nAppuyez sur Entrée pour continuer...")
 
@@ -73,28 +65,27 @@ def ajouter_contact_cli():
 
 
 def modifier_contact_cli():
-    """Interface CLI pour modifier un contact"""
     print("\n" + "=" * 50)
     print("MODIFIER UN CONTACT")
     print("=" * 50)
 
     try:
-        contact_id = input("\n🔑 ID du contact à modifier : ").strip()
+        contact_id = input("\nID du contact à modifier : ").strip()
 
         # Récupérer le contact
         contact = Contact.get_by_id(contact_id)
 
         if not contact:
-            print("\n❌ Contact introuvable.")
+            print("\nContact introuvable.")
             input("\nAppuyez sur Entrée pour continuer...")
             return
 
-        print("\n📄 Contact actuel :")
+        print("\nContact actuel :")
         print(contact)
 
-        print("\n✏️  Laissez vide pour conserver la valeur actuelle\n")
+        print("\nLaissez vide pour conserver la valeur actuelle\n")
 
-        # Champs principaux
+
         nom = input(f"Nom [{contact.nom}] : ").strip() or contact.nom
         prenom = input(f"Prénom [{contact.prenom}] : ").strip() or contact.prenom
         telephone = input(f"Téléphone [{contact.telephone}] : ").strip() or contact.telephone
@@ -102,7 +93,7 @@ def modifier_contact_cli():
 
         # Adresse
         adresse_actuelle = contact.adresse or {}
-        print("\n📍 Adresse :")
+        print("\nAdresse :")
 
         rue = input(f"Rue [{adresse_actuelle.get('rue', '')}] : ").strip() or adresse_actuelle.get('rue')
         ville = input(f"Ville [{adresse_actuelle.get('ville', '')}] : ").strip() or adresse_actuelle.get('ville')
@@ -130,7 +121,7 @@ def modifier_contact_cli():
             adresse=adresse
         )
 
-        print("\n✅ Contact modifié avec succès !")
+        print("\nContact modifié avec succès !")
     except ValueError as e:
         print(f"Une erreur est survenue lors de l'update {e}")
 
@@ -139,7 +130,6 @@ def modifier_contact_cli():
 
 
 def supprimer_contact_cli():
-    """Interface CLI pour supprimer un contact"""
     print("\n" + "=" * 50)
     print("SUPPRIMER UN CONTACT")
     print("=" * 50)
@@ -160,10 +150,6 @@ def supprimer_contact_cli():
 
 
 def rechercher_contact_cli():
-    """Interface CLI pour rechercher un contact"""
-    # 1. Demander critère de recherche (nom, email, etc.)
-    # 2. Appeler Contact.rechercher_par_nom() ou autre
-    # 3. Afficher résultats
     try:
         print("\nQue voulez vous rechercher ? ")
         search_input = input("\nVotre recherche : ")
@@ -178,7 +164,7 @@ def rechercher_contact_cli():
             input("\nAppuyez sur Entrée pour continuer...")
             return
 
-        # Préparer les données pour le tableau
+
         headers = ["ID", "Nom", "Prénom", "Email", "Téléphone", "Ville"]
         rows = []
 
@@ -205,9 +191,6 @@ def rechercher_contact_cli():
 
 
 def lister_contacts_cli():
-    """Interface CLI pour lister les contacts"""
-    # 1. Appeler Contact.lister_tous()
-    # 2. Afficher sous forme de tableau
     print("\n" + "=" * 100)
     print("LISTE DES CONTACTS")
     print("=" * 100)
@@ -221,7 +204,6 @@ def lister_contacts_cli():
             input("\nAppuyez sur Entrée pour continuer...")
             return
 
-        # Préparer les données pour le tableau
         headers = ["ID", "Nom", "Prénom", "Email", "Téléphone", "Ville"]
         rows = []
 
@@ -236,7 +218,6 @@ def lister_contacts_cli():
                 contact.adresse.get('ville', 'N/A') if contact.adresse else 'N/A'
             ])
 
-        # Afficher le tableau
         print("\n")
         print(tabulate(rows, headers=headers, tablefmt="grid"))
         print(f"\nTotal: {len(contacts)} contact(s)")
@@ -249,7 +230,6 @@ def lister_contacts_cli():
 
 
 def importer_contacts_cli():
-    """Interface CLI pour importer des contacts"""
     print("\n" + "=" * 100)
     print("IMPORT DE CONTACTS")
     print("=" * 100)
@@ -274,7 +254,6 @@ def importer_contacts_cli():
 
 
 def exporter_contacts_cli():
-    """Interface CLI pour exporter des contacts"""
     print("\n" + "=" * 100)
     print("EXPORT DES CONTACTS")
     print("=" * 100)
@@ -300,7 +279,6 @@ def exporter_contacts_cli():
 
 
 
-# ============= FONCTION PRINCIPALE =============
 
 def main():
     """Point d'entrée principal"""
@@ -309,7 +287,7 @@ def main():
         db.connect()
         Contact.init_collection()
 
-        # Boucle principale du menu
+        # Menu et programme
         while True:
             afficher_menu()
             choix = input("\nVotre choix : ")
